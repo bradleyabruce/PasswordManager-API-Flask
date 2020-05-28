@@ -9,7 +9,10 @@ def fill(user):
     else:
         query = "SELECT u.Username, u.Email, u.FirstName, u.LastName, u.Password FROM tUsers u WHERE u.UserID = " + str(user.UserID) + ";"
         result = DBConn.query_return(query)
-        user.mapper(result)
+        if len(result) > 0:
+            user.mapper(result)
+        else:
+            user.UserID = 0
         return user
 
 
@@ -48,5 +51,3 @@ def hash_password(password):
         100000)  # It is recommended to use at least 100,000 iterations of SHA-256
     hashed_password = key.decode("utf-8", "backslashreplace")
     return hashed_password
-
-

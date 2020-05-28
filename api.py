@@ -2,7 +2,7 @@ import flask
 from flask import request
 from termcolor import colored
 import json
-from Controllers import UserController
+from Controllers import UserController, PasswordController
 
 app = flask.Flask(__name__)
 
@@ -25,6 +25,13 @@ def user_login():
 def user_signup():
     json_data = request.get_json()
     return UserController.signup(json_data['username'], json_data['password'], json_data['email'], json_data['firstname'], json_data['lastname'])
+
+
+# Password Functions
+@app.route('/api/v1.0/Password/fill', methods=['POST'])
+def password_fill():
+    json_data = request.get_json()
+    return PasswordController.fill(json_data['password_id'])
 
 
 if __name__ == '__main__':

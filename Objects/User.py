@@ -8,7 +8,6 @@ class User:
         self.LastName = None
         self.Password = None
 
-    # need to check to see if exists before settings it
     def mapper(self, result_set):
         for row in result_set:
             if "UserID" in row:
