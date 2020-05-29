@@ -5,7 +5,7 @@ def fill(password):
     if password.PasswordID == 0:
         return None
     else:
-        query = "SELECT p.PasswordID, p.DateCreated, p.DateModified, pd.PasswordType, pd.PasswordName, pd.PasswordUser, pd.PasswordSite, pd.PasswordPassword, pd.PasswordNote " \
+        query = "SELECT p.PasswordID, p.DateCreated, p.DateModified, p.UserID, pd.PasswordType, pd.PasswordName, pd.PasswordUser, pd.PasswordSite, pd.PasswordPassword, pd.PasswordNote " \
                 "FROM tPassword p LEFT JOIN tPasswordDetail pd ON p.PasswordDetailID = pd.PasswordDetailID " \
                 "WHERE p.UserID = 1"
         result = DBConn.query_return(query)

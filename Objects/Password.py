@@ -4,6 +4,7 @@ class Password:
         self.PasswordID = 0
         self.DateCreated = None
         self.DateModified = None
+        self.UserID = None
         self.PasswordType = None
         self.PasswordName = None
         self.PasswordUser = None
@@ -19,6 +20,8 @@ class Password:
                 self.DateCreated = row["DateCreated"]
             if "DateModified" in row:
                 self.DateModified = row["DateModified"]
+            if "UserID" in row:
+                self.PasswordType = row["UserID"]
             if "PasswordType" in row:
                 self.PasswordType = row["PasswordType"]
             if "PasswordName" in row:

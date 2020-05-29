@@ -7,6 +7,7 @@ class User:
         self.FirstName = None
         self.LastName = None
         self.Password = None
+        self.Salt = None
 
     def mapper(self, result_set):
         for row in result_set:
@@ -16,6 +17,8 @@ class User:
                 self.UserName = row["Username"]
             if "Password" in row:
                 self.Password = row["Password"]
+            if "Salt" in row:
+                self.Salt = row["Salt"]
             if "Email" in row:
                 self.Email = row["Email"]
             if "FirstName" in row:

@@ -2,6 +2,7 @@ from BL import UserBL
 import json
 from flask import Response
 
+from Objects.Exceptions import EmailUnavailableException, UsernameUnavailableException
 from Objects.User import User
 
 
@@ -45,7 +46,9 @@ def signup(username, password, email, firstname, lastname):
             return Response(json.dumps(user.__dict__), status=200, mimetype='application/json')
         else:
             return Response("Failure signing up", status=200)
-    except Exception as e:
-        return None
+    except EmailUnavailableException:
+        return Response("Email unavailable", status=200)
+    except UsernameUnavailableException:
+        return Response("Username unavailable", status=200)
 
 

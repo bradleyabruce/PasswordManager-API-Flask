@@ -1,7 +1,5 @@
 import flask
 from flask import request
-from termcolor import colored
-import json
 from Controllers import UserController, PasswordController
 
 app = flask.Flask(__name__)
@@ -35,4 +33,4 @@ def password_fill():
 
 
 if __name__ == '__main__':
-    app.run(host="localhost", port=8092, debug=False)
+    app.run(host="localhost", port=8092, debug=False, ssl_context='adhoc')
