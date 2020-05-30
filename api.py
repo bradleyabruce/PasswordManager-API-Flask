@@ -19,10 +19,14 @@ def user_signup():
 """
 Password Functions
 """
-@app.route('/api/v1.0/Password/fill', methods=['POST'])
+@app.route('/api/v1.0/Password/insert', methods=['POST'])
 def password_insert():
     json_data = request.get_json()
     return PasswordController.insert(json_data['password_type'], json_data['password_name'], json_data['password_user'], json_data['password_site'], json_data['password_password'], json_data['password_note'], json_data['password_user_id'])
+@app.route('/api/v1.0/Password/generate', methods=['POST'])
+def password_generate():
+    json_data = request.get_json()
+    return PasswordController.generate_password(json_data['password_length'], json_data['include_special_characters'])
 
 """
 Launch API
