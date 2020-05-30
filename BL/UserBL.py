@@ -1,16 +1,18 @@
 import hashlib
-import os
 import random
-
 from DL import DBConn
 from Objects.Exceptions import EmailUnavailableException, UsernameUnavailableException
 
-
+"""
+Fill Method.
+We do NOT want this method accessible from outside the API
+"""
 def fill(user):
     if user.UserID == 0:
         return None
     else:
-        query = "SELECT u.Username, u.Salt, u.Email, u.FirstName, u.LastName, u.Password FROM tUsers u WHERE u.UserID = " + str(user.UserID) + ";"
+        query = "SELECT u.Username, u.Salt, u.Email, u.FirstName, u.LastName, u.Password FROM tUsers u WHERE u.UserID = " + str(
+            user.UserID) + ";"
         result = DBConn.query_return(query)
         if len(result) > 0:
             user.mapper(result)
@@ -18,7 +20,9 @@ def fill(user):
             user.UserID = 0
         return user
 
-
+"""
+Login and Sign up Functions
+"""
 def login(user):
     if user.UserName is not None and user.Password is not None:
         user.Password = get_hashed_password(user.UserName, user.Password)
@@ -43,7 +47,7 @@ def signup(user):
     if new_id != 0:
         user.UserID = new_id
         return user
-    else:   # return will 0 ID
+    else:  # return will 0 ID
         return user
 
 
@@ -91,3 +95,6 @@ def verify_unused_email(email):
         return False
     else:
         return True
+"""
+End Login and Signup Functions
+"""

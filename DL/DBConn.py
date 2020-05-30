@@ -34,6 +34,9 @@ def query_insert(query):
             return cursor.lastrowid
         else:
             return 0
+    except Exception as e:
+        print(e)
+        return 0
     finally:
         cursor.close()
         conn.close()

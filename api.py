@@ -4,17 +4,9 @@ from Controllers import UserController, PasswordController
 
 app = flask.Flask(__name__)
 
-
-@app.route('/', methods=['GET'])
-def home():
-    return "Hello World"
-
-
-# User Functions
-@app.route('/api/v1.0/User/fill', methods=['POST'])
-def user_fill():
-    json_data = request.get_json()
-    return UserController.fill(json_data['user_id'])
+"""
+User Functions
+"""
 @app.route('/api/v1.0/User/login', methods=['POST'])
 def user_login():
     json_data = request.get_json()
@@ -24,13 +16,16 @@ def user_signup():
     json_data = request.get_json()
     return UserController.signup(json_data['username'], json_data['password'], json_data['email'], json_data['firstname'], json_data['lastname'])
 
-
-# Password Functions
+"""
+Password Functions
+"""
 @app.route('/api/v1.0/Password/fill', methods=['POST'])
-def password_fill():
+def password_insert():
     json_data = request.get_json()
-    return PasswordController.fill(json_data['password_id'])
+    return PasswordController.insert(json_data['password_type'], json_data['password_name'], json_data['password_user'], json_data['password_site'], json_data['password_password'], json_data['password_note'], json_data['password_user_id'])
 
-
+"""
+Launch API
+"""
 if __name__ == '__main__':
     app.run(host="localhost", port=8092, debug=False, ssl_context='adhoc')
