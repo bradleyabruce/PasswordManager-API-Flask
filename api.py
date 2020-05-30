@@ -27,6 +27,10 @@ def password_insert():
 def password_generate():
     json_data = request.get_json()
     return PasswordController.generate_password(json_data['password_length'], json_data['include_special_characters'])
+@app.route('/api/v1.0/Password/password_pwned_count', methods=['POST'])
+def password_pwned_count():
+    json_data = request.get_json()
+    return PasswordController.password_pwned_count(json_data['password'])
 
 """
 Launch API

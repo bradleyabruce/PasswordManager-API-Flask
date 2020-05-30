@@ -41,8 +41,16 @@ def insert(password_type, password_name, password_user, password_site, password_
 
 def generate_password(length, include_special_characters):
     try:
-        password = PasswordBL.generate_password(int(length), include_special_characters)
+        password = PasswordBL.generate_password(int(length), bool(int(include_special_characters)))
         return Response(password, status=200)
     except Exception as e:
         print(e)
+        return Response("Error", status=503)
+
+
+def password_pwned_count(password):
+    try:
+        pwned_count = PasswordBL.password_pwned_count(password)
+        return Response(str(pwned_count), status=200)
+    except:
         return Response("Error", status=503)

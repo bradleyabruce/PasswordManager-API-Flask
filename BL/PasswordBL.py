@@ -1,6 +1,9 @@
+import hashlib
 import string
 from datetime import datetime
 import random
+
+import requests
 
 from DL import DBConn
 from Objects.Exceptions import PasswordLengthTooSmall, PasswordLengthTooLarge
@@ -48,14 +51,32 @@ def insert(password):
 """
 Generate Password
 """
-def generate_password(length, include_special_characters):
+def generate_password(length, include_special_characters, verify_not_pwned):
     if length < 4:
         raise PasswordLengthTooSmall
     if length > 24:
         raise PasswordLengthTooLarge
 
     characters = string.ascii_letters + string.digits
-    if include_special_characters is "False":
+    if include_special_characters:
         characters += string.punctuation
 
-    return ''.join(random.choice(characters) for i in range(length))
+    password = ''.join(random.choice(characters) for i in range(length))
+
+    # if verify_not_pwned:
+    #    if password_pwned_count(password) > 0:
+
+    return password
+
+
+def password_pwned_count(password):
+    sha1_password = hashlib.sha1(password.encode('utf-8')).hexdigest().upper()
+    head, tail = sha1_password[:5], sha1_password[5:]
+    url = 'https://api.pwnedpasswords.com/range/' + head
+    res = requests.get(url)
+    if not res.ok:
+        raise RuntimeError('Error fetching "{}": {}'.format(
+            url, res.status_code))
+    hashes = (line.split(':') for line in res.text.splitlines())
+    count = next((int(count) for t, count in hashes if t == tail), 0)
+    return count
