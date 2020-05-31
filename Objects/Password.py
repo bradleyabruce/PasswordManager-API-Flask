@@ -13,24 +13,34 @@ class Password:
         self.PasswordNote = None
 
     def mapper(self, result_set):
-        for row in result_set:
-            if "PasswordID" in row:
-                self.PasswordID = row["PasswordID"]
-            if "DateCreated" in row:
-                self.DateCreated = row["DateCreated"]
-            if "DateModified" in row:
-                self.DateModified = row["DateModified"]
-            if "UserID" in row:
-                self.PasswordType = row["UserID"]
-            if "PasswordType" in row:
-                self.PasswordType = row["PasswordType"]
-            if "PasswordName" in row:
-                self.PasswordName = row["PasswordName"]
-            if "PasswordUser" in row:
-                self.PasswordUser = row["PasswordUser"]
-            if "PasswordSite" in row:
-                self.PasswordSite = row["PasswordSite"]
-            if "PasswordPassword" in row:
-                self.PasswordPassword = row["PasswordPassword"]
-            if "PasswordNote" in row:
-                self.PasswordNote = row["PasswordNote"]
+        for key, value in result_set.items():
+            if "PasswordID" in key:
+                self.PasswordID = value
+                continue
+            if "DateCreated" in key:
+                self.DateCreated = str(value)
+                continue
+            if "DateModified" in key:
+                self.DateModified = str(value)
+                continue
+            if "UserID" in key:
+                self.UserID = value
+                continue
+            if "PasswordType" in key:
+                self.PasswordType = value
+                continue
+            if "PasswordName" in key:
+                self.PasswordName = value
+                continue
+            if "PasswordUser" in key:
+                self.PasswordUser = value
+                continue
+            if "PasswordSite" in key:
+                self.PasswordSite = value
+                continue
+            if "PasswordPassword" in key:
+                self.PasswordPassword = value
+                continue
+            if "PasswordNote" in key:
+                self.PasswordNote = value
+                continue

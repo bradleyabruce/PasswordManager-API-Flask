@@ -50,5 +50,7 @@ def signup(username, password, email, firstname, lastname):
         return Response("Email unavailable", status=200)
     except UsernameUnavailableException:
         return Response("Username unavailable", status=200)
+    except:
+        return Response("Error", status=503)
 
 

@@ -3,6 +3,7 @@ import json
 from flask import Response
 
 from BL import PasswordBL
+from Objects.Exceptions import PasswordLengthTooSmall, PasswordLengthTooLarge
 from Objects.Password import Password
 
 
@@ -39,13 +40,16 @@ def insert(password_type, password_name, password_user, password_site, password_
         return Response("Error", status=503)
 
 
-def generate_password(length, include_special_characters):
+def generate_password(length, include_special_characters, verify_not_pwned):
     try:
-        password = PasswordBL.generate_password(int(length), bool(int(include_special_characters)))
+        password = PasswordBL.generate_password(int(length), bool(int(include_special_characters)), bool(int(verify_not_pwned)))
         return Response(password, status=200)
-    except Exception as e:
-        print(e)
-        return Response("Error", status=503)
+    except PasswordLengthTooSmall:
+        return Response("Password length too small.", status=200)
+    except PasswordLengthTooLarge:
+        return Response("Password length too large.", status=200)
+    except:
+        return Response("Error.", status=503)
 
 
 def password_pwned_count(password):
@@ -54,3 +58,13 @@ def password_pwned_count(password):
         return Response(str(pwned_count), status=200)
     except:
         return Response("Error", status=503)
+
+
+def get_all_user_passwords(user_id, user_password):
+    try:
+        passwords = PasswordBL.get_all_user_passwords(user_id, user_password)
+        return Response(json.dumps([Password.__dict__ for Password in passwords]), status=200, mimetype='application/json')
+    except Exception as e:
+        print(e)
+        return Response("Error", status=503)
+

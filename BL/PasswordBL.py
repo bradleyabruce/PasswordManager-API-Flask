@@ -7,6 +7,7 @@ import requests
 
 from DL import DBConn
 from Objects.Exceptions import PasswordLengthTooSmall, PasswordLengthTooLarge
+from Objects.Password import Password
 
 """
 Fill Method.
@@ -63,8 +64,11 @@ def generate_password(length, include_special_characters, verify_not_pwned):
 
     password = ''.join(random.choice(characters) for i in range(length))
 
-    # if verify_not_pwned:
-    #    if password_pwned_count(password) > 0:
+    if verify_not_pwned:
+        if password_pwned_count(password) > 0:
+            print("Generated password was already pwned. Regenerating...")
+            # Recursive call to self
+            return generate_password(length, include_special_characters, True)
 
     return password
 
@@ -80,3 +84,18 @@ def password_pwned_count(password):
     hashes = (line.split(':') for line in res.text.splitlines())
     count = next((int(count) for t, count in hashes if t == tail), 0)
     return count
+
+
+def get_all_user_passwords(user_id, user_password):
+    passwords = []
+    query = "SELECT p.PasswordID, p.DateCreated, p.DateModified, p.UserID, pd.PasswordType, pd.PasswordName, pd.PasswordUser, pd.PasswordSite, pd.PasswordPassword, pd.PasswordNote, u.UserID " \
+            "FROM tPassword p " \
+            "LEFT JOIN tPasswordDetail pd ON p.PasswordDetailID = pd.PasswordDetailID " \
+            "LEFT JOIN tUsers u ON u.UserID = p.UserID " \
+            "WHERE u.UserID = " + user_id + " AND u.Password = '" + user_password + "';"
+    result = DBConn.query_return(query)
+    for row in result:
+        password = Password()
+        password.mapper(row)
+        passwords.append(password)
+    return passwords
