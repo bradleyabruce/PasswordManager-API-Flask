@@ -24,14 +24,17 @@ def query_return(query):
         conn.close()
 
 
-def query_insert(query):
+def query_update(query, is_insert):
     conn = return_connection()
     cursor = conn.cursor()
     try:
         cursor.execute(query)
         conn.commit()
         if cursor.rowcount > 0:
-            return cursor.lastrowid
+            if is_insert:
+                return cursor.lastrowid
+            else:
+                return cursor.rowcount
         else:
             return 0
     except Exception as e:
@@ -40,3 +43,4 @@ def query_insert(query):
     finally:
         cursor.close()
         conn.close()
+

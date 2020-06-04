@@ -40,6 +40,18 @@ def insert(password_type, password_name, password_user, password_site, password_
         return Response("Error", status=503)
 
 
+def delete(password_id):
+    try:
+        delete_result = PasswordBL.delete(password_id)
+        if delete_result:
+            return Response("Success", status=200)
+        else:
+            return Response("Error", status=503)
+    except Exception as e:
+        print(e)
+        return Response("Error", status=503)
+
+
 def generate_password(length, include_special_characters, verify_not_pwned):
     try:
         password = PasswordBL.generate_password(int(length), bool(int(include_special_characters)), bool(int(verify_not_pwned)))

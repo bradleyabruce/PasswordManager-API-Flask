@@ -39,7 +39,7 @@ def insert(password):
         # Password Entry
         timestamp = str(datetime.now())
         query = "INSERT INTO tPassword (PasswordDetailID, UserID, DateCreated, DateModified) VALUES (" + str(password_detail_id) + ", " + str(password.UserID) + ", NOW(), NOW());"
-        password.PasswordID = DBConn.query_insert(query)
+        password.PasswordID = DBConn.query_update(query, True)
         if password.PasswordID != 0:
             password.DateCreated = timestamp
             password.DateModified = timestamp
@@ -48,6 +48,23 @@ def insert(password):
             return password
     else:  # return will 0 ID
         return password
+
+
+def delete(password_id):
+    password_detail_id = None
+    query = "SELECT p.PasswordDetailID FROM tPassword p WHERE p.PasswordID = " + str(password_id) + ";"
+    result = DBConn.query_return(query)
+    for dictionary in result:
+        password_detail_id = list(dictionary.values())[0]
+    if password_detail_id is not None:
+        query = "DELETE FROM tPassword p WHERE p.PasswordID = " + str(password_id) + ";"
+        DBConn.query_update(query, False)
+        query = "DELETE FROM tPasswordDetail pd WHERE pd.PasswordDetailID = " + str(password_detail_id) + ";"
+        DBConn.query_update(query, False)
+        return True
+    else:
+        return False
+
 
 """
 Generate Password

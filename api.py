@@ -23,6 +23,10 @@ Password Functions
 def password_insert():
     json_data = request.get_json()
     return PasswordController.insert(json_data['password_type'], json_data['password_name'], json_data['password_user'], json_data['password_site'], json_data['password_password'], json_data['password_note'], json_data['password_user_id'])
+@app.route('/api/v1.0/Password/delete', methods=['POST'])
+def password_delete():
+    json_data = request.get_json()
+    return PasswordController.delete(json_data['password_id'])
 @app.route('/api/v1.0/Password/generate', methods=['POST'])
 def password_generate():
     json_data = request.get_json()

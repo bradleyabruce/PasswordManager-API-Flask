@@ -43,7 +43,7 @@ def signup(user):
 
     user.Password, user.Salt = hash_password(str(user.Password))
     query = "INSERT INTO tUsers (Username, Password, Salt, Email, FirstName, LastName) VALUES ('" + user.UserName + "', '" + user.Password + "', '" + user.Salt + "', '" + user.Email + "', '" + user.FirstName + "', '" + user.LastName + "');"
-    new_id = DBConn.query_insert(query)
+    new_id = DBConn.query_update(query, True)
     if new_id != 0:
         user.UserID = new_id
         return user
